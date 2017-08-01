@@ -30,7 +30,7 @@ var mongoUtil = function() {
 */
 mongoUtil.prototype.createnewDB = function () {
 
-  this.Mongolive.connect(localthis.murl, function(err, db) {
+  this.Mongolive.connect(this.murl, function(err, db) {
     if (err) throw err;
 console.log("Database created!");
     db.close();
