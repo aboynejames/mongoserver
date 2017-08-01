@@ -1,0 +1,41 @@
+{
+  "name": "MongoServer",
+  "description": "RESTAPI",
+  "homepage": "http://www.lknhealth.org>",
+  "version": "0.1.46",
+  "author": "James Littlejohn <james@aboynejames.co.uk> (https://twitter.com/aboynejames)",
+  "keywords": [
+    "rest",
+    "api",
+    "mongo",
+    "test"
+  ],
+  "contributors": [
+    "some soon",
+    "and then some more",
+    "maybe a community"
+  ],
+  "scripts": {
+    "test": "node_modules/.bin/buster-test -r specification"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aboynejames/mongoserver"
+  },
+  "bugs": {
+    "url": "https://github.com/aboynejames/mongoserver/issues"
+  },
+  "main": "./src/index.js",
+  "license": "gpl-3",
+  "devDependencies": {
+    "buster": ">=0.6.1",
+    "casperjs": ">=1.1.0-beta3"
+  },
+  "engines": {
+    "node": "^7.4.0"
+  },
+  "dependencies": {
+    "async": "~0.2.10",
+    "mongodb": "^2.2.30",
+  }
+}
