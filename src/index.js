@@ -19,5 +19,6 @@ var handle = {};
 handle["/"] = requestHandlers.start;;
 handle["/logout"] = requestHandlers.logout;
 handle["/datasave"] = requestHandlers.datasave;
+handle["/heartdata"] = requestHandlers.heartdata;
 
 server.start(router.route, handle);

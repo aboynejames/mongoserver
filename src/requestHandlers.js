@@ -38,9 +38,8 @@ function start(fullpath, response) {
 *
 */
 function livetokenaccount(liveaccount, livetoken) {
-console.log('token check');
-console.log(livetoken);
-	if( livetoken == '')
+
+	if( livetoken == 'c9d2l0di2sd09s9ss')
 	{
 			var result = "passedenter";
 			return result;
@@ -109,8 +108,7 @@ function logout (fullpath, response, request, couchin, couchlive) {
 *
 */
 function datasave(fullpath, response, request, settings, liveMongon) {
-console.log('start of datasave handler');
-console.log(fullpath);
+
 	var checkpassin = '';
 	var livedatabase = '';
 
@@ -147,30 +145,27 @@ console.log(fullpath);
                         // End the response - we're not sending back any content.
                         return( response.end() );
                 }
-console.log(request.method);
+
 		if(request.method == 'POST'){
-console.log('postpoasteed');
+;
 			var syncdatain = '';
 			var cleandata = '';
 			request.on('data', function(chunk) {
-console.log('any data');
-console.log(chunk)
+
 				syncdatain += chunk;
 
 			});
 
 			request.on('end', function() {
 				cleandata =  JSON.parse(syncdatain);
-console.log('data infrom post');
-console.log(cleandata);
 				// next make a PUT MongoDB
 				liveMongon.insertCollection(cleandata);
 
 				syncresponse = {"save":"passed"};
-											checksync = JSON.stringify(syncresponse);
-											response.setHeader("access-control-allow-origin", origin);
-											response.writeHead(200, {"Content-Type": "application/json"});
-											response.end(checksync);
+				checksync = JSON.stringify(syncresponse);
+				response.setHeader("access-control-allow-origin", origin);
+				response.writeHead(200, {"Content-Type": "application/json"});
+				response.end(checksync);
 
 
 			});
@@ -224,20 +219,19 @@ console.log('not passed');
 
 /**
 *  check if email id or data notification should be sent
-* @method checkdata
+* @method heartdata
 *
 */
-function checkdata(fullpath, response, request, setttings, liveMongo) {
+function heartdata(fullpath, response, request, setttings, liveMongo) {
 
 	var checkpassin = '';
 	var livedatabase = '';
 
 	// check token and db are live if not tell user to re signing
-	var secpassed = livetokenaccount(fullpath[2], fullpath[4]);
+	var secpassed = livetokenaccount(fullpath[1], fullpath[2]);
 
 	if(secpassed == "passedenter")
 	{
-		livedatabase = couchin.resthistory[fullpath[2]].database;
 		// set design doc for email status
                 // When dealing with CORS (Cross-Origin Resource Sharing)
                 // requests, the client should pass-through its origin (the
@@ -268,8 +262,7 @@ function checkdata(fullpath, response, request, setttings, liveMongo) {
                         // End the response - we're not sending back any content.
                         return( response.end() );
                 }
-
-		if(request.method == 'POST'){
+		if(request.method == 'GET'){
 			var syncdatain = '';
 			var cleandata = '';
 			request.on('data', function(chunk) {
@@ -278,14 +271,13 @@ function checkdata(fullpath, response, request, setttings, liveMongo) {
 			});
 
 			request.on('end', function() {
-				cleandata =  JSON.parse(syncdatain);
-
+				cleandata = "heartrate";
 				// next make a PUT call to couchdb API
 				// first need to see what type of save  data, id settings etc. and route appropriately
-				if(cleandata == "checkemail")
+				if(cleandata == "heartrate")
 				{
 					// query couchdb for email/data status
-					couchlive.getEmailIDcouchdb(cleandata, fullpath,  response, origin, couchin,  couchlive, emaillive);
+					liveMongo.retrieveCollection(cleandata, fullpath,  response, origin);
 
 				}
 			});
@@ -296,4 +288,4 @@ function checkdata(fullpath, response, request, setttings, liveMongo) {
 exports.start = start;
 exports.logout = logout;
 exports.datasave = datasave;
-exports.checkdata = checkdata;
+exports.heartdata = heartdata;

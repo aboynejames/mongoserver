@@ -20,7 +20,7 @@ var mongoUtil = function() {
   //this.createnewDB();
   //this.createCollection();
   //this.insertCollection();
-  this.retrieveCollection();
+  //this.retrieveCollection();
 
 };
 
@@ -77,15 +77,22 @@ mongoUtil.prototype.insertCollection = function (dataIN) {
 *  retrieve data from a collection
 * @method createCollection
 */
-mongoUtil.prototype.retrieveCollection = function () {
+mongoUtil.prototype.retrieveCollection = function (cleandata, fullpath,  response, origin) {
 
   this.Mongolive.connect(this.murl, function(err, db) {
+;
     if (err) throw err;
     var query = { device: "mio" };
     db.collection("heartrate").find(query).toArray(function(err, result) {
       if (err) throw err;
-      console.log(result);
+
       db.close();
+      // return data and success to REST caller
+      response.setHeader("access-control-allow-origin", origin);
+    	response.writeHead(200, {"Content-Type": "application/json"});
+    	response.end(JSON.stringify(result));
+
+
     });
   });
 
