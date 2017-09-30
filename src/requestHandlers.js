@@ -39,7 +39,7 @@ function start(fullpath, response) {
 */
 function livetokenaccount(liveaccount, livetoken) {
 
-	if( livetoken == 'c9d2l0di2sd09s9ss')
+	if( livetoken == '')
 	{
 			var result = "passedenter";
 			return result;
@@ -285,7 +285,76 @@ function heartdata(fullpath, response, request, setttings, liveMongo) {
 	}
 };
 
+/**
+*  check if email id or data notification should be sent
+* @method heartdata
+*
+*/
+function heart24data(fullpath, response, request, setttings, liveMongo) {
+
+	var checkpassin = '';
+	var livedatabase = '';
+
+	// check token and db are live if not tell user to re signing
+	var secpassed = livetokenaccount(fullpath[1], fullpath[2]);
+
+	if(secpassed == "passedenter")
+	{
+		// set design doc for email status
+                // When dealing with CORS (Cross-Origin Resource Sharing)
+                // requests, the client should pass-through its origin (the
+                // requesting domain). We should either echo that or use *
+                // if the origin was not passed.
+                var origin = (request.headers.origin || "*");
+                // Check to see if this is a security check by the browser to
+                // test the availability of the API for the client. If the
+                // method is OPTIONS, the browser is check to see to see what
+                // HTTP methods (and properties) have been granted to the
+                // client.
+                if (request.method.toUpperCase() === "OPTIONS"){
+                        // Echo back the Origin (calling domain) so that the
+                        // client is granted access to make subsequent requests
+                        // to the API.
+                        response.writeHead(
+                                "204",
+                                "No Content",
+                                {
+                                        "access-control-allow-origin": origin,
+                                        "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
+                                        "access-control-allow-headers": "content-type, accept",
+                                        "access-control-max-age": 10, // Seconds.
+                                        "content-length": 0
+                                }
+                        );
+
+                        // End the response - we're not sending back any content.
+                        return( response.end() );
+                }
+		if(request.method == 'GET'){
+			var syncdatain = '';
+			var cleandata = '';
+			request.on('data', function(chunk) {
+				syncdatain += chunk;
+
+			});
+
+			request.on('end', function() {
+				cleandata = "heart24rate";
+				// next make a PUT call to couchdb API
+				// first need to see what type of save  data, id settings etc. and route appropriately
+				if(cleandata == "heart24rate")
+				{
+					// query couchdb for email/data status
+					liveMongo.retrieve24hrcollection(cleandata, fullpath,  response, origin);
+
+				}
+			});
+		}
+	}
+};
+
 exports.start = start;
 exports.logout = logout;
 exports.datasave = datasave;
 exports.heartdata = heartdata;
+exports.heart24data = heart24data;

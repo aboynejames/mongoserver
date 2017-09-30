@@ -20,5 +20,6 @@ handle["/"] = requestHandlers.start;;
 handle["/logout"] = requestHandlers.logout;
 handle["/datasave"] = requestHandlers.datasave;
 handle["/heartdata"] = requestHandlers.heartdata;
+handle["/heart24data"] = requestHandlers.heart24data;
 
 server.start(router.route, handle);

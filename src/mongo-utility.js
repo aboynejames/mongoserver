@@ -21,6 +21,7 @@ var mongoUtil = function() {
   //this.createCollection();
   //this.insertCollection();
   //this.retrieveCollection();
+  //this.retrieve24hrcollection();
 
 };
 
@@ -74,8 +75,29 @@ mongoUtil.prototype.insertCollection = function (dataIN) {
 };
 
 /**
+*  insert data into a collection  individual Average
+* @method insertAverageCollection
+*/
+mongoUtil.prototype.insertAverageCollection = function (dataIN) {
+
+  this.Mongolive.connect(this.murl, function(err, db) {
+    if (err) throw err;
+console.log(dataIN);
+    var myobj = dataIN;//{ daystart: "UTC", hravg: "73", cover: 79% };
+console.log('whats to be saved in monogo average');
+console.log(myobj);
+    db.collection("heartrateaverage").insertOne(myobj, function(err, res) {
+      if (err) throw err;
+console.log("1 record inserted");
+      db.close();
+    });
+  });
+
+};
+
+/**
 *  retrieve data from a collection
-* @method createCollection
+* @method retrieveCollection
 */
 mongoUtil.prototype.retrieveCollection = function (cleandata, fullpath,  response, origin) {
 
@@ -93,6 +115,29 @@ mongoUtil.prototype.retrieveCollection = function (cleandata, fullpath,  respons
     	response.end(JSON.stringify(result));
 
 
+    });
+  });
+
+};
+
+/**
+*  retrieve data from a collection
+* @method retrieve24hrcollection
+*/
+mongoUtil.prototype.retrieve24hrcollection = function (cleandata, fullpath,  response, origin) {
+
+  this.Mongolive.connect(this.murl, function(err, db) {
+;
+    if (err) throw err;
+    var query = {};
+    db.collection("heartrateaverage").find(query).toArray(function(err, result) {
+      if (err) throw err;
+
+      db.close();
+      // return data and success to REST caller
+      response.setHeader("access-control-allow-origin", origin);
+    	response.writeHead(200, {"Content-Type": "application/json"});
+    	response.end(JSON.stringify(result));
     });
   });
 
