@@ -39,7 +39,7 @@ function start(fullpath, response) {
 */
 function livetokenaccount(liveaccount, livetoken) {
 
-	if( livetoken == '')
+	if( livetoken == 'c9d2l0di2sd09s9ss')
 	{
 			var result = "passedenter";
 			return result;
@@ -223,7 +223,7 @@ console.log('not passed');
 *
 */
 function heartdata(fullpath, response, request, setttings, liveMongo) {
-
+console.log('heartdata');
 	var checkpassin = '';
 	var livedatabase = '';
 
@@ -291,7 +291,7 @@ function heartdata(fullpath, response, request, setttings, liveMongo) {
 *
 */
 function heart24data(fullpath, response, request, setttings, liveMongo) {
-
+console.log('heart24data');
 	var checkpassin = '';
 	var livedatabase = '';
 

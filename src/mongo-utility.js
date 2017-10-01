@@ -105,8 +105,9 @@ mongoUtil.prototype.retrieveCollection = function (cleandata, fullpath,  respons
     if (err) throw err;
     var query = { "author": fullpath[3] };
     db.collection("heartrate").find(query).toArray(function(err, result) {
+console.log(err);
       if (err) throw err;
-
+console.log(err);
       db.close();
       // return data and success to REST caller
       response.setHeader("access-control-allow-origin", origin);
@@ -127,10 +128,13 @@ mongoUtil.prototype.retrieve24hrcollection = function (cleandata, fullpath,  res
   this.Mongolive.connect(this.murl, function(err, db) {
 
     if (err) throw err;
-    var query = { "author": fullpath[3] };
+    //var query = { "author": fullpath[3] };
+    var query = { "author":"andrew" };
     db.collection("heartrateaverage").find(query).toArray(function(err, result) {
+console.log(err);
       if (err) throw err;
-
+console.log('data found');
+console.log(result);
       db.close();
       // return data and success to REST caller
       response.setHeader("access-control-allow-origin", origin);
