@@ -39,7 +39,7 @@ function start(fullpath, response) {
 */
 function livetokenaccount(liveaccount, livetoken) {
 
-	if( livetoken == 'c9d2l0di2sd09s9ss')
+	if( livetoken == '')
 	{
 			var result = "passedenter";
 			return result;
