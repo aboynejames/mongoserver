@@ -287,7 +287,7 @@ function heartdata(fullpath, response, request, setttings, liveMongo) {
 
 /**
 *  check if email id or data notification should be sent
-* @method heartdata
+* @method heart24data
 *
 */
 function heart24data(fullpath, response, request, setttings, liveMongo) {

@@ -100,11 +100,10 @@ console.log("1 record inserted");
 * @method retrieveCollection
 */
 mongoUtil.prototype.retrieveCollection = function (cleandata, fullpath,  response, origin) {
-
   this.Mongolive.connect(this.murl, function(err, db) {
-;
+
     if (err) throw err;
-    var query = { device: "mio" };
+    var query = { "author": fullpath[3] };
     db.collection("heartrate").find(query).toArray(function(err, result) {
       if (err) throw err;
 
@@ -113,7 +112,6 @@ mongoUtil.prototype.retrieveCollection = function (cleandata, fullpath,  respons
       response.setHeader("access-control-allow-origin", origin);
     	response.writeHead(200, {"Content-Type": "application/json"});
     	response.end(JSON.stringify(result));
-
 
     });
   });
@@ -127,9 +125,9 @@ mongoUtil.prototype.retrieveCollection = function (cleandata, fullpath,  respons
 mongoUtil.prototype.retrieve24hrcollection = function (cleandata, fullpath,  response, origin) {
 
   this.Mongolive.connect(this.murl, function(err, db) {
-;
+
     if (err) throw err;
-    var query = {};
+    var query = { "author": fullpath[3] };
     db.collection("heartrateaverage").find(query).toArray(function(err, result) {
       if (err) throw err;
 
