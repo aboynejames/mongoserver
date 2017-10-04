@@ -100,6 +100,8 @@ console.log("1 record inserted");
 * @method retrieveCollection
 */
 mongoUtil.prototype.retrieveCollection = function (cleandata, fullpath,  response, origin) {
+
+  var returnData;
   this.Mongolive.connect(this.murl, function(err, db) {
 
     if (err) throw err;
@@ -128,18 +130,26 @@ mongoUtil.prototype.retrieve24hrcollection = function (cleandata, fullpath,  res
   this.Mongolive.connect(this.murl, function(err, db) {
 
     if (err) throw err;
-    //var query = { "author": fullpath[3] };
-    var query = { "author":"andrew" };
+    var query = { "author": fullpath[3] };
     db.collection("heartrateaverage").find(query).toArray(function(err, result) {
 console.log(err);
       if (err) throw err;
 console.log('data found');
 console.log(result);
       db.close();
+      // last or whole list of averages
+      if(fullpath[4] == 'last')
+      {
+        returnData = result.slice(-1);
+
+      }
+      else {
+        returnData = result;
+      }
       // return data and success to REST caller
       response.setHeader("access-control-allow-origin", origin);
     	response.writeHead(200, {"Content-Type": "application/json"});
-    	response.end(JSON.stringify(result));
+    	response.end(JSON.stringify(returnData));
     });
   });
 
