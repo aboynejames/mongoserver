@@ -173,7 +173,6 @@ function datasave(fullpath, response, request, settings, liveMongon) {
 	}
 	else
 	{
-console.log('not passed');
 		// When dealing with CORS (Cross-Origin Resource Sharing)
                 // requests, the client should pass-through its origin (the
                 // requesting domain). We should either echo that or use *
@@ -229,7 +228,7 @@ console.log('heartdata');
 
 	// check token and db are live if not tell user to re signing
 	var secpassed = livetokenaccount(fullpath[1], fullpath[2]);
-
+console.log(secpassed);
 	if(secpassed == "passedenter")
 	{
 		// set design doc for email status
@@ -353,8 +352,77 @@ console.log('heart24data');
 	}
 };
 
+/**
+*  retrieve network heartrate average over 24 hours
+* @method networkheart24data
+*
+*/
+function networkheart24data(fullpath, response, request, setttings, liveMongo) {
+console.log('NETWORKheart24data');
+	var checkpassin = '';
+	var livedatabase = '';
+
+	// check token and db are live if not tell user to re signing
+	var secpassed = livetokenaccount(fullpath[1], fullpath[2]);
+
+	if(secpassed == "passedenter")
+	{
+		// set design doc for email status
+                // When dealing with CORS (Cross-Origin Resource Sharing)
+                // requests, the client should pass-through its origin (the
+                // requesting domain). We should either echo that or use *
+                // if the origin was not passed.
+                var origin = (request.headers.origin || "*");
+                // Check to see if this is a security check by the browser to
+                // test the availability of the API for the client. If the
+                // method is OPTIONS, the browser is check to see to see what
+                // HTTP methods (and properties) have been granted to the
+                // client.
+                if (request.method.toUpperCase() === "OPTIONS"){
+                        // Echo back the Origin (calling domain) so that the
+                        // client is granted access to make subsequent requests
+                        // to the API.
+                        response.writeHead(
+                                "204",
+                                "No Content",
+                                {
+                                        "access-control-allow-origin": origin,
+                                        "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
+                                        "access-control-allow-headers": "content-type, accept",
+                                        "access-control-max-age": 10, // Seconds.
+                                        "content-length": 0
+                                }
+                        );
+
+                        // End the response - we're not sending back any content.
+                        return( response.end() );
+                }
+		if(request.method == 'GET'){
+			var syncdatain = '';
+			var cleandata = '';
+			request.on('data', function(chunk) {
+				syncdatain += chunk;
+
+			});
+
+			request.on('end', function() {
+				cleandata = "nheart24rate";
+				// next make a PUT call to couchdb API
+				// first need to see what type of save  data, id settings etc. and route appropriately
+				if(cleandata == "nheart24rate")
+				{
+					// query couchdb for email/data status
+					liveMongo.retrievenetwork24hrcollection(cleandata, fullpath,  response, origin);
+
+				}
+			});
+		}
+	}
+};
+
 exports.start = start;
 exports.logout = logout;
 exports.datasave = datasave;
 exports.heartdata = heartdata;
 exports.heart24data = heart24data;
+exports.networkheart24data = networkheart24data;

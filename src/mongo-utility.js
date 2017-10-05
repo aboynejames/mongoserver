@@ -82,11 +82,29 @@ mongoUtil.prototype.insertAverageCollection = function (dataIN) {
 
   this.Mongolive.connect(this.murl, function(err, db) {
     if (err) throw err;
-console.log(dataIN);
     var myobj = dataIN;//{ daystart: "UTC", hravg: "73", cover: 79% };
-console.log('whats to be saved in monogo average');
-console.log(myobj);
+
     db.collection("heartrateaverage").insertOne(myobj, function(err, res) {
+      if (err) throw err;
+console.log("1 record inserted");
+      db.close();
+    });
+  });
+
+};
+
+/**
+*  insert data into a collection  Network Average
+* @method insertNetworkAverageCollection
+*/
+mongoUtil.prototype.insertNetworkAverageCollection = function (dataIN) {
+
+  this.Mongolive.connect(this.murl, function(err, db) {
+    if (err) throw err;
+
+    var myobj = dataIN;//{ daystart: "UTC", hravg: "73", cover: 79% };
+
+    db.collection("heartratenetworkaverage").insertOne(myobj, function(err, res) {
       if (err) throw err;
 console.log("1 record inserted");
       db.close();
@@ -109,7 +127,6 @@ mongoUtil.prototype.retrieveCollection = function (cleandata, fullpath,  respons
     db.collection("heartrate").find(query).toArray(function(err, result) {
 console.log(err);
       if (err) throw err;
-console.log(err);
       db.close();
       // return data and success to REST caller
       response.setHeader("access-control-allow-origin", origin);
@@ -134,8 +151,7 @@ mongoUtil.prototype.retrieve24hrcollection = function (cleandata, fullpath,  res
     db.collection("heartrateaverage").find(query).toArray(function(err, result) {
 console.log(err);
       if (err) throw err;
-console.log('data found');
-console.log(result);
+
       db.close();
       // last or whole list of averages
       if(fullpath[4] == 'last')
@@ -155,5 +171,37 @@ console.log(result);
 
 };
 
+/**
+*  retrieve data from a collection
+* @method retrievenetwork24hrcollection
+*/
+mongoUtil.prototype.retrievenetwork24hrcollection = function (cleandata, fullpath,  response, origin) {
+
+  this.Mongolive.connect(this.murl, function(err, db) {
+
+    if (err) throw err;
+    var query = { };
+    db.collection("heartratenetworkaverage").find(query).toArray(function(err, result) {
+console.log(err);
+      if (err) throw err;
+
+      db.close();
+      // last or whole list of averages
+      if(fullpath[4] == 'last')
+      {
+        returnData = result.slice(-1);
+
+      }
+      else {
+        returnData = result;
+      }
+      // return data and success to REST caller
+      response.setHeader("access-control-allow-origin", origin);
+    	response.writeHead(200, {"Content-Type": "application/json"});
+    	response.end(JSON.stringify(returnData));
+    });
+  });
+
+};
 
 module.exports = mongoUtil;
